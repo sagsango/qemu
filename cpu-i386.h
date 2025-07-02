@@ -23,6 +23,11 @@
 #include "config.h"
 #include <setjmp.h>
 
+/*
+ * XXX:
+ *  Full width general purpose registers
+ *  only 8
+ */
 #define R_EAX 0
 #define R_ECX 1
 #define R_EDX 2
@@ -32,6 +37,11 @@
 #define R_ESI 6
 #define R_EDI 7
 
+/*
+ *
+ * XXX:
+ *  Half width general purpose registers
+ */
 #define R_AL 0
 #define R_CL 1
 #define R_DL 2
@@ -41,13 +51,24 @@
 #define R_DH 6
 #define R_BH 7
 
+/*
+ * XXX:
+ *  Segmnet register;
+ *  Memory size were too big to address by 8 bit (full width) register 
+ *  6 segment registers
+ */
 #define R_ES 0
 #define R_CS 1
 #define R_SS 2
 #define R_DS 3
-#define R_FS 4
-#define R_GS 5
+#define R_FS 4 /* XXX: Extra Segment (additional, used for thread-local storage, OS-specific) */
+#define R_GS 5 /* XXX: Extra Segment (same as FS, modern OSes often use this for thread/CPU-local storage) */
 
+/*
+ *
+ * XXX:
+ *  Flags
+ */
 #define CC_C   	0x0001
 #define CC_P 	0x0004
 #define CC_A	0x0010
@@ -146,6 +167,57 @@ typedef struct SegmentCache {
     uint8_t seg_32bit;
 } SegmentCache;
 
+/*
+ * XXX: 
+ *      1. Present in protected mode.
+ *      2. https://en.wikipedia.org/wiki/Segment_descriptor
+ *      3. https://wiki.osdev.org/Global_Descriptor_Table 
+ *      4. https://en.wikipedia.org/wiki/Global_Descriptor_Table 
+ *      5. https://en.wikipedia.org/wiki/Protected_mode
+ *      6. https://wiki.osdev.org/Interrupt_Descriptor_Table
+
+Wiki - Segment descriptor:
+    In memory addressing for Intel x86 computer architectures, segment
+    descriptors are a part of the segmentation unit, used for transla-
+    ting a logical address to a linear address. Segment descriptors d-
+    escribe the memory segment referred to in the logical address.[1] 
+    The segment descriptor (8 bytes long in 80286 and later) contains 
+    the following fields:
+    01. Base Address
+    02. Segment Limit
+    03. G=Granularity
+    04. D/B
+    05. L=Long
+    06. AVL=Available
+    07. P=Present
+    08. DPL=Descriptor privilege level
+    09. S=System Segment
+    10. Type
+    11. C=Conforming
+    12. E=Expand-Down
+    13. R=Readable
+    14. W=Writable
+    15. A=Accessed
+
+
+Global Descriptor Table (GDT):
+    A system-wide table that defines segments accessible to all proce-
+    sses. Used for kernel-level segments, user code/data segments, an-
+    d task state segments (TSS). Loaded into the CPU using the LGDT i-
+    nstruction, which sets the GDTR (Global Descriptor Table Register).
+
+Local Descriptor Table (LDT):
+    A per-process table that defines segments specific to a particular
+    task or process. Used in multitasking environments to isolate pro-
+    cess memory. Loaded using the LLDT instruction, which sets the 
+    LDTR (Local Descriptor Table Register).
+ *
+ *
+ *
+ *
+ *
+ * 
+ */
 typedef struct SegmentDescriptorTable {
     uint8_t *base;
     unsigned long limit;
@@ -154,11 +226,15 @@ typedef struct SegmentDescriptorTable {
     unsigned long emu_base;
 } SegmentDescriptorTable;
 
+/*
+ * XXX:
+ *  Emulated CPU
+ */
 typedef struct CPUX86State {
     /* standard registers */
-    uint32_t regs[8];
-    uint32_t eip;
-    uint32_t eflags;
+    uint32_t regs[8]; /* XXX: 8 general purpose registers */
+    uint32_t eip;     /* XXX: instruction pointer */
+    uint32_t eflags;  /* XXX: https://en.wikipedia.org/wiki/FLAGS_register */
 
     /* emulator internal eflags handling */
     uint32_t cc_src;
@@ -177,11 +253,11 @@ typedef struct CPUX86State {
     CPU86_LDouble ft0;
     
     /* segments */
-    uint32_t segs[6]; /* selector values */
+    uint32_t segs[6]; /* selector values */ /*XXX: 6 segment register */
     SegmentCache seg_cache[6]; /* info taken from LDT/GDT */
-    SegmentDescriptorTable gdt;
-    SegmentDescriptorTable ldt;
-    SegmentDescriptorTable idt;
+    SegmentDescriptorTable gdt; /* XXX: global discriper table */
+    SegmentDescriptorTable ldt; /* XXX: local discripter table */
+    SegmentDescriptorTable idt; /* XXX: interrupt discriper table */
     
     /* various CPU modes */
     int vm86;
