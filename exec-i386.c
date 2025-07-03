@@ -1,4 +1,8 @@
 /*
+ * XXX:
+ *  i386 emulator main execution loop
+ */
+/*
  *  i386 emulator main execution loop
  * 
  *  Copyright (c) 2003 Fabrice Bellard
@@ -167,6 +171,10 @@ static const char *cc_op_str[] = {
     "SARL",
 };
 
+/*
+ * XXX:
+ *  CPU State!!
+ */
 static void cpu_x86_dump_state(FILE *f)
 {
     int eflags;
@@ -220,6 +228,12 @@ static void tb_flush(void)
     /* XXX: flush processor icache at this point */
 }
 
+/*
+ *
+ * XXX:
+ *  What is this?
+ *  Only called from : cpu_x86_exec
+ */
 /* find a translation block in the translation cache. If not found,
    return NULL and the pointer to the last element of the list in pptb */
 static inline TranslationBlock *tb_find(TranslationBlock ***pptb,
@@ -364,6 +378,10 @@ int cpu_x86_exec(CPUX86State *env1)
                    generating code */
                 cpu_lock();
                 tc_ptr = code_gen_ptr;
+                /*
+                 * XXX:
+                 *  Tranlate guest code to host code
+                 */
                 ret = cpu_x86_gen_code(code_gen_ptr, CODE_GEN_MAX_SIZE, 
                                        &code_gen_size, pc, cs_base, flags);
                 /* if invalid instruction, signal it */

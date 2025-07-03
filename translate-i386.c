@@ -1329,6 +1329,10 @@ static void gen_enter(DisasContext *s, int esp_addend, int level)
     gen_op_mov_reg_T1[ot][R_ESP]();
 }
 
+/*
+ * XXX:
+ *  Disaas the guest instr
+ */
 /* return the next pc address. Return -1 if no insn found. *is_jmp_ptr
    is set to true if the instruction sets the PC (last instruction of
    a basic block) */
@@ -3488,6 +3492,11 @@ static void dump_ops(const uint16_t *opc_buf)
 static uint16_t gen_opc_buf[OPC_BUF_SIZE];
 static uint32_t gen_opparam_buf[OPPARAM_BUF_SIZE];
 
+/*
+ *
+ * XXX:
+ *  Translate guest code to host code
+ */
 /* return non zero if the very first instruction is invalid so that
    the virtual CPU can trigger an exception. */
 int cpu_x86_gen_code(uint8_t *gen_code_buf, int max_code_size, 
@@ -3519,6 +3528,9 @@ int cpu_x86_gen_code(uint8_t *gen_code_buf, int max_code_size,
     dc->is_jmp = 0;
     pc_ptr = pc_start;
     do {
+        /* XXX:
+         *  Disassemble the guest instr
+         */
         ret = disas_insn(dc, pc_ptr);
         if (ret == -1) {
             /* we trigger an illegal instruction operation only if it
@@ -3588,6 +3600,10 @@ int cpu_x86_gen_code(uint8_t *gen_code_buf, int max_code_size,
     }
 #endif
 
+    /*
+     * XXX:
+     *  guest to host code generation
+     */
     /* generate machine code */
     gen_code_size = dyngen_code(gen_code_buf, gen_opc_buf, gen_opparam_buf);
     flush_icache_range((unsigned long)gen_code_buf, (unsigned long)(gen_code_buf + gen_code_size));

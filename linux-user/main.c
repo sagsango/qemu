@@ -103,6 +103,10 @@ void write_dt(void *ptr, unsigned long addr, unsigned long limit,
 
 uint64_t gdt_table[6];
 
+/*
+ * XXX:
+ *  cpu_loop: calls cpu_x86_exec(env); in the loop
+ */
 void cpu_loop(struct CPUX86State *env)
 {
     int err;
@@ -261,6 +265,10 @@ int main(int argc, char **argv)
     cpu_x86_load_seg(env, R_FS, __USER_DS);
     cpu_x86_load_seg(env, R_GS, __USER_DS);
 
+    /*
+     * XXX:
+     *  main calls cpu_loop() and ever return back from there
+     */
     cpu_loop(env);
     /* never exits */
     return 0;

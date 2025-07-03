@@ -169,6 +169,12 @@ static inline int lshift(int x, int n)
 #undef REG
 #undef REGNAME
 
+/*
+ *
+ * XXX:
+ *  asm instruction poeration in x86
+ */
+
 /* operations with flags */
 
 void OPPROTO op_addl_T0_T1_cc(void)

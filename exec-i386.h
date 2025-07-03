@@ -46,6 +46,12 @@ extern int loglevel;
 extern int fprintf(FILE *, const char *, ...);
 extern int printf(const char *, ...);
 
+/*
+ *
+ * XXX:
+ *  T0, T1 & T2 are forced to map to edx, esi & edi registers
+ *  respectivily!
+ */
 #ifdef __i386__
 register unsigned int T0 asm("ebx");
 register unsigned int T1 asm("esi");
