@@ -937,6 +937,10 @@ void OPPROTO op_das(void)
     CC_SRC = eflags;
 }
 
+/*
+ * XXX:
+ *  Loading the segments
+ */
 /* segment handling */
 
 void load_seg(int seg_reg, int selector)
@@ -961,6 +965,10 @@ void load_seg(int seg_reg, int selector)
         index = selector & ~7;
         if ((index + 7) > dt->limit)
             raise_exception(EXCP0D_GPF);
+        /* XXX:
+         * here is the translation
+         * and loading the segment in the cache
+         */
         ptr = dt->base + index;
         e1 = ldl(ptr);
         e2 = ldl(ptr + 4);

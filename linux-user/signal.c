@@ -154,6 +154,15 @@ void target_to_host_siginfo(siginfo_t *info, const target_siginfo_t *tinfo)
         (void *)tswapl(tinfo->_sifields._rt._sigval.sival_ptr);
 }
 
+/*
+ * XXX:
+ *  Regsitering host signal handler;
+ *  which sends signal & interrups accordningly
+ *  to the guest.
+ *
+ *  We have same signal handler for every signal!
+ *  And all the signal are beging handeled.
+ */
 void signal_init(void)
 {
     struct sigaction act;
@@ -299,6 +308,12 @@ static void dump_regs(struct ucontext *uc)
 
 #endif
 
+/*
+ *
+ * XXX:
+ *  Host signal handler sends interrupt/signal
+ *  to the guest
+ */
 static void host_signal_handler(int host_signum, siginfo_t *info, 
                                 void *puc)
 {

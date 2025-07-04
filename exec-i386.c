@@ -455,6 +455,10 @@ void cpu_x86_load_seg(CPUX86State *s, int seg_reg, int selector)
 
     saved_env = env;
     env = s;
+    /*
+     * XXX:
+     *  Load the segment in segment-cache
+     */
     load_seg(seg_reg, selector);
     env = saved_env;
 }

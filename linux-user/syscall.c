@@ -130,6 +130,11 @@ void target_set_brk(char *new_brk)
     target_original_brk = new_brk;
 }
 
+/*
+ *
+ * XXX:
+ *  Break system call handling
+ */
 static long do_brk(char *new_brk)
 {
     char *brk_page;
@@ -163,6 +168,11 @@ static long do_brk(char *new_brk)
     }
 }
 
+/*
+ *
+ * XXX:
+ *  fd virtualization started here
+ */
 static inline fd_set *target_to_host_fds(fd_set *fds, 
                                          target_long *target_fds, int n)
 {
@@ -258,6 +268,11 @@ static long do_select(long n,
     return ret;
 }
 
+/*
+ *
+ * XXX:
+ *  interesting; port veriualization started here
+ */
 static long do_socketcall(int num, long *vptr)
 {
     long ret;
@@ -420,6 +435,11 @@ const IOCTLEntry ioctl_entries[] = {
     { 0, 0, },
 };
 
+/*
+ *
+ * XXX:
+ *  Mother of iovert (device virtualization started here)
+ */
 static long do_ioctl(long fd, long cmd, long arg)
 {
     const IOCTLEntry *ie;
@@ -826,7 +846,16 @@ void syscall_init(void)
 #undef STRUCT
 #undef STRUCT_SPECIAL
 }
-                                 
+ 
+
+/*
+ *
+ * XXX:
+ *  syscall instruction in guest may expect the result in diff
+ *  formate (or struct arg can be diff)
+ *  We must be able to convert guest systecall args to host syscall
+ *  args and similarliy result has to be converted too!
+ */
 long do_syscall(void *cpu_env, int num, long arg1, long arg2, long arg3, 
                 long arg4, long arg5, long arg6)
 {

@@ -236,9 +236,27 @@ int main(int argc, char **argv)
     }
 
     target_set_brk((char *)info->brk);
+    /*
+     * XXX:
+     *  guest and host syscall are diff
+     *  data type; struct definitions
+     *  agrs (kernel version diff)
+     *
+     *  so here we init the handling first
+     */
     syscall_init();
+    /*
+     * XXX:
+     *  install signal handler for evey signal
+     *  in the host which will send the signal/interrups
+     *  to the guest; if needed
+     */
     signal_init();
-
+    /*
+     *
+     * XXX:
+     *  init the cpu state
+     */
     env = cpu_x86_init();
     global_env = env;
 

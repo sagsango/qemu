@@ -28,6 +28,14 @@
 
 #define MAX_STRUCTS 128
 
+/*
+ * XXX@sagar:
+ *  host and guest may not use the same endian (big & little) endian
+ *  host and guest may have diff compiler (representation of the data)
+ *  host and guest may have diff width of the data-type.
+ */
+
+
 /* XXX: make it dynamic */
 static StructEntry struct_entries[MAX_STRUCTS];
 
@@ -130,6 +138,12 @@ static inline const argtype *thunk_type_next(const argtype *type_ptr)
     }
 }
 
+
+/*
+ *
+ * XXX:
+ *  They are convertion the geust struct to host struct
+ */
 void thunk_register_struct(int id, const char *name, const argtype *types)
 {
     const argtype *type_ptr;

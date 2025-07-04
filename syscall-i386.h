@@ -1,3 +1,11 @@
+/*
+ * XXX:
+ *  As guest and host can use diff kernel
+ *  version; so host should be aware of 
+ *  the system call arg's struct and flags
+ *  so here it is! these are guest spesific
+ */
+
 /* from linux/unistd.h */
 
 #define TARGET_NR_exit		  1
@@ -242,6 +250,10 @@
 #define TARGET_SIG_UNBLOCK        1    /* for unblocking signals */
 #define TARGET_SIG_SETMASK        2    /* for setting the signal mask */
 
+/*
+ * XXX:
+ *  Guest's systems call arg
+ */
 struct target_stat {
 	unsigned short st_dev;
 	unsigned short __pad1;
@@ -264,6 +276,13 @@ struct target_stat {
 	target_ulong  __unused4;
 	target_ulong  __unused5;
 };
+
+/*
+ * XXX:
+ *  So during this patch glibc was on version 2.1
+ *  And these are the agrs of system call
+ *  so host should be aware of guests syscall structs
+ */
 
 /* This matches struct stat64 in glibc2.1, hence the absolutely
  * insane amounts of padding around dev_t's.
@@ -365,6 +384,13 @@ typedef union target_sigval {
 #define TARGET_SI_MAX_SIZE	128
 #define TARGET_SI_PAD_SIZE	((TARGET_SI_MAX_SIZE/sizeof(int)) - 3)
 
+/*
+ *
+ * XXX:
+ *  Ohh, so guest and host can use diff versions of the glibc
+ *  so somehow host should be aware of the system call args
+ *  and return values
+ */
 typedef struct target_siginfo {
 	int si_signo;
 	int si_errno;

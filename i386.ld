@@ -1,3 +1,15 @@
+/* XXX:
+ *  Why we need here?
+ *  We are not making a kernel here atleast in this version!
+ *  In my unerstading we can just run small c programs on 
+ *  the top of this toy hypervisor
+ *
+ *  But may be we can run whole kerenl on the top of it?
+ *  Nope! because kerel need more initialization, like
+ *  physical memory, disk etc. (Which must be done in the -
+ *  later virsons).
+ */
+
 /* ld script to make i386 Linux kernel
  * Written by Martin Mares <mj@atrey.karlin.mff.cuni.cz>;
  */

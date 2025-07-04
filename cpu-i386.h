@@ -298,7 +298,7 @@ typedef struct CPUX86State {
     /* exception/interrupt handling */
     jmp_buf jmp_env;
     int exception_index;
-    int interrupt_request;
+    int interrupt_request; /* XXX: set in case of vcpu need interruption */
 } CPUX86State;
 
 /* all CPU memory access use these macros */
@@ -498,6 +498,11 @@ static inline void stfq(void *ptr, double v)
 }
 #endif
 
+/*
+ *
+ * XXX:
+ *  Port IO (which is not supported in this version)
+ */
 #ifndef IN_OP_I386
 void cpu_x86_outb(int addr, int val);
 void cpu_x86_outw(int addr, int val);
@@ -509,12 +514,21 @@ int cpu_x86_inl(int addr);
 
 CPUX86State *cpu_x86_init(void);
 int cpu_x86_exec(CPUX86State *s);
+/*
+ * XXX:
+ *  Interrupt from host to guest
+ */
 void cpu_x86_interrupt(CPUX86State *s);
 void cpu_x86_close(CPUX86State *s);
 
 /* needed to load some predefinied segment registers */
 void cpu_x86_load_seg(CPUX86State *s, int seg_reg, int selector);
 
+/*
+ *
+ * XXX:
+ *  host to guest signal transafer
+ */
 /* you can call these signal handler from you SIGBUS and SIGSEGV
    signal handlers to inform the virtual CPU of exceptions. non zero
    is returned if the signal was handled by the virtual CPU.  */
