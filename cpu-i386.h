@@ -175,6 +175,39 @@ typedef struct SegmentCache {
  *      4. https://en.wikipedia.org/wiki/Global_Descriptor_Table 
  *      5. https://en.wikipedia.org/wiki/Protected_mode
  *      6. https://wiki.osdev.org/Interrupt_Descriptor_Table
+ *
+ *
+ *
+ * NOTE:
+ *      Before we had page table, we used to have sagemnts for mem
+ *      protection; 
+ *
+ *          Register	Use
+            CS	        Code Segment — where instructions are fetched from.
+            DS	        Data Segment — default for data.
+            SS	        Stack Segment — used for ESP and EBP.
+            ES	        Extra Segment — string instructions (MOVS, LODS).
+            FS	        General-purpose, often used for Thread-Local Storage.
+            GS	        Same, another general-purpose extra segment.
+
+        So cs, ds, ss, es, fs, & gs were fixed per taks and we will get 
+        the correct address by:
+
+            Physical Address = Segment Base + Offset
+
+        GDT & LDT contains many entries about diff segmnets 
+        touple of (cs, ds, ss, es, fs, gs); for diff programs
+        GDTR & LDTR register are just index into that table.
+
+        2 Prcoess have diff LDTR
+        2 Threads have same LDTR
+ *
+ *
+ *
+ *
+ *
+ *
+ *
 
 Wiki - Segment descriptor:
     In memory addressing for Intel x86 computer architectures, segment
