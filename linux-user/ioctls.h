@@ -1,3 +1,11 @@
+/*
+ * XXX:
+ *  This file just use macro
+ *  to populate all the supported
+ *  ioctl for the guest!
+ *
+ *  Not eveything is supported!
+ */
      /* emulated ioctl list */
 
      IOCTL(TCGETS, IOC_R, MK_PTR(MK_STRUCT(STRUCT_termios)))

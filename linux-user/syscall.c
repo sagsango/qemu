@@ -428,6 +428,11 @@ typedef struct IOCTLEntry {
 
 #define MAX_STRUCT_SIZE 4096
 
+/*
+ *
+ * XXX:
+ *  All supported ioctls are present in this array!
+ */
 const IOCTLEntry ioctl_entries[] = {
 #define IOCTL(cmd, access, types...) \
     { TARGET_ ## cmd, cmd, #cmd, access, { types } },
