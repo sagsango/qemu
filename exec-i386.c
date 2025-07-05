@@ -352,6 +352,11 @@ int cpu_x86_exec(CPUX86State *env1)
     /* prepare setjmp context for exception handling */
     if (setjmp(env->jmp_env) == 0) {
         for(;;) {
+            /* XXX:
+             * If host reaised an interrupt request
+             * for the guest cpu then, handle that
+             * exeption
+             */
             if (env->interrupt_request) {
                 raise_exception(EXCP_INTERRUPT);
             }
