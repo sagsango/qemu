@@ -106,6 +106,26 @@ uint64_t gdt_table[6];
 /*
  * XXX:
  *  cpu_loop: calls cpu_x86_exec(env); in the loop
+ *            for (;;) {
+ *              cpu_x86_exec(): 
+ *                  for (;;) {
+ *                      handle_vCPU_interrups()
+ *                      calculate the pc (progam counter)  =  code_segmnet_base + rip
+ *                      check if the pc instruction is already translated
+ *                      if not translate it:
+ *                          cpu_x86_gen_code()
+ *                      execute the translated function() for that instruction:
+ *                          normal instruction
+ *                          syscall instruction  (interrput)
+ *                          interrups
+ *                      Challenges (see linux-user/syscall.c):
+ *                          how to simulate the interrups to cpus
+ *                          How to generate mmu model with protection (segments)
+ *                          how to simulate the system call instructions
+ *                          little vs big endian
+ *                          fd mappings (guest to host)
+ *                          port virtualization
+ *            }
  */
 void cpu_loop(struct CPUX86State *env)
 {
@@ -219,6 +239,7 @@ int main(int argc, char **argv)
     /* Zero out image_info */
     memset(info, 0, sizeof(struct image_info));
 
+    /* XXX: Load the elf, and init regs */
     if(elf_exec(filename, argv+optind, environ, regs, info) != 0) {
 	printf("Error loading %s\n", filename);
 	exit(1);

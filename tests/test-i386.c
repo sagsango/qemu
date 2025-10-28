@@ -815,6 +815,19 @@ void test_code16(void)
 
 static void *call_end __init_call = NULL;
 
+/*
+ * XXX:
+ *  How we test our qemu works fine
+ *      1. We test indivisual intructions works fine!
+ *          - basic instruction
+ *          - system call
+ *          - interrups
+ *          - etc
+ *      2. We test indivisual virtualization works fine (memory, memory protection, fd, signal)
+ *      3. We test indivisual elf section handling works fine
+ *      4. We test sigle threaded program works fine!
+ *      4. We test whole elf is runing fine! (multi threaded)
+ */
 int main(int argc, char **argv)
 {
     void **ptr;

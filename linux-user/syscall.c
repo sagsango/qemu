@@ -443,7 +443,7 @@ const IOCTLEntry ioctl_entries[] = {
 /*
  *
  * XXX:
- *  Mother of iovert (device virtualization started here)
+ *  Mother of iovirt (device virtualization started here)
  */
 static long do_ioctl(long fd, long cmd, long arg)
 {
@@ -810,6 +810,10 @@ static int clone_func(void *arg)
     return 0;
 }
 
+/*
+ *  XXX:
+ *      fork/clone virtualization
+ */
 int do_fork(CPUX86State *env, unsigned int flags, unsigned long newsp)
 {
     int ret;
@@ -831,6 +835,10 @@ int do_fork(CPUX86State *env, unsigned int flags, unsigned long newsp)
         /* if no CLONE_VM, we consider it is a fork */
         if ((flags & ~CSIGNAL) != 0)
             return -EINVAL;
+        /*
+         * XXX: In this case new process will be having eveything as parent
+         * including the vCPU
+         */
         ret = fork();
     }
     return ret;
@@ -860,6 +868,9 @@ void syscall_init(void)
  *  formate (or struct arg can be diff)
  *  We must be able to convert guest systecall args to host syscall
  *  args and similarliy result has to be converted too!
+ *
+ *  syscall may even not exist in the host, which guest is expecting
+ *  we have to emulate that!!
  */
 long do_syscall(void *cpu_env, int num, long arg1, long arg2, long arg3, 
                 long arg4, long arg5, long arg6)

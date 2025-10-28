@@ -1,3 +1,8 @@
+/*
+ * XXX:
+ *  TODO: Not sure but I think this program will be running on the top of the
+ *  qemu itself
+ */
 #include <stdlib.h>
 #include <stdio.h>
 #include <signal.h>

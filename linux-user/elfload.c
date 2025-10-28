@@ -910,7 +910,10 @@ static int load_elf_binary(struct linux_binprm * bprm, struct target_pt_regs * r
 }
 
 
-
+/*
+ * XXX:
+ *  called by main
+ */
 int elf_exec(const char * filename, char ** argv, char ** envp, 
              struct target_pt_regs * regs, struct image_info *infop)
 {

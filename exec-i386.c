@@ -270,6 +270,9 @@ static inline TranslationBlock *tb_alloc(void)
     return tb;
 }
 
+
+
+
 int cpu_x86_exec(CPUX86State *env1)
 {
     int saved_T0, saved_T1, saved_A0;
@@ -353,7 +356,7 @@ int cpu_x86_exec(CPUX86State *env1)
     if (setjmp(env->jmp_env) == 0) {
         for(;;) {
             /* XXX:
-             * If host reaised an interrupt request
+             * If (host) reaised an interrupt request
              * for the guest cpu then, handle that
              * exeption
              */
@@ -374,9 +377,17 @@ int cpu_x86_exec(CPUX86State *env1)
                        (unsigned long)env->seg_cache[R_SS].base) != 0) << 
                 GEN_FLAG_ADDSEG_SHIFT;
             cs_base = env->seg_cache[R_CS].base;
+            /* XXX: pc = code_segmnet_base + rip */
             pc = cs_base + env->eip;
+            /* XXX: First check if the instruction at that  pc/adress is present in
+             * translation cache 
+             */
             tb = tb_find(&ptb, (unsigned long)pc, (unsigned long)cs_base, 
                          flags);
+
+            /* XXX:
+             *  If not then translate the instruction at pc/address 
+             */
             if (!tb) {
                 /* if no translated code available, then translate it now */
                 /* XXX: very inefficient: we lock all the cpus when
@@ -404,6 +415,9 @@ int cpu_x86_exec(CPUX86State *env1)
                 code_gen_ptr = (void *)(((unsigned long)code_gen_ptr + code_gen_size + CODE_GEN_ALIGN - 1) & ~(CODE_GEN_ALIGN - 1));
                 cpu_unlock();
             }
+            /* XXX:
+             *  Execute the translated code
+             */
             /* execute the generated code */
             tc_ptr = tb->tc_ptr;
             gen_func = (void *)tc_ptr;

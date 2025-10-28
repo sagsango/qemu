@@ -89,6 +89,10 @@ extern int loglevel;
 #define PREFIX_ADR 0x400
 #define PREFIX_FWAIT 0x800
 
+/*
+ * XXX:
+ *  Context during dissassembly
+ */
 typedef struct DisasContext {
     /* current insn context */
     int prefix;
@@ -3496,6 +3500,7 @@ static uint32_t gen_opparam_buf[OPPARAM_BUF_SIZE];
  *
  * XXX:
  *  Translate guest code to host code
+ *  main cpu emulation engine
  */
 /* return non zero if the very first instruction is invalid so that
    the virtual CPU can trigger an exception. */

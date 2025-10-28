@@ -1,4 +1,8 @@
 /*
+ * XXX:
+ *  Emulation of Linux signals
+ */
+/*
  *  Emulation of Linux signals
  * 
  *  Copyright (c) 2003 Fabrice Bellard
@@ -52,7 +56,10 @@ static int signal_pending; /* non zero if a signal may be pending */
 static void host_signal_handler(int host_signum, siginfo_t *info, 
                                 void *puc);
 
-/* XXX: do it properly */
+/* XXX: 
+ *  do it properly
+ *  Mapping can differ
+ */
 static inline int host_to_target_signal(int sig)
 {
     return sig;
@@ -223,6 +230,11 @@ void __attribute((noreturn)) force_sig(int sig)
 #endif
 }
 
+
+/*
+ *
+ * XXX:
+ */
 /* queue a signal so that it will be send to the virtual CPU as soon
    as possible */
 int queue_signal(int sig, target_siginfo_t *info)
