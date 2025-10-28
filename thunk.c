@@ -33,6 +33,8 @@
  *  host and guest may not use the same endian (big & little) endian
  *  host and guest may have diff compiler (representation of the data)
  *  host and guest may have diff width of the data-type.
+ *
+ *  convert data between host and target CPU
  */
 
 
