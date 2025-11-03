@@ -104,6 +104,11 @@ static int kvm_set_user_memory_region(KVMState *s, KVMSlot *slot)
 }
 
 
+/*
+ * XXX:
+ *	When qemu starts it init the cpus
+ *	which calls the kvm vcpu init
+ */
 int kvm_init_vcpu(CPUState *env)
 {
     KVMState *s = kvm_state;
@@ -135,6 +140,7 @@ int kvm_init_vcpu(CPUState *env)
         goto err;
     }
 
+    /* XXX: Init the arch spesific x86 things */
     ret = kvm_arch_init_vcpu(env);
 
 err:

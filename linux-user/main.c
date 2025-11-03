@@ -2230,7 +2230,11 @@ void init_task_state(TaskState *ts)
     }
     ts->sigqueue_table[i].next = NULL;
 }
- 
+
+/*
+ * XXX:
+ *	We start from here!
+ */
 int main(int argc, char **argv, char **envp)
 {
     const char *filename;
@@ -2394,6 +2398,11 @@ int main(int argc, char **argv, char **envp)
 #endif
     }
     cpu_exec_init_all(0);
+
+    /*
+     * XXX:
+     *	here kvm vcpus get inited
+     */
     /* NOTE: we need to init the CPU at this stage to get
        qemu_host_page_size */
     env = cpu_init(cpu_model);
