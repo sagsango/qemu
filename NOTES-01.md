@@ -54,7 +54,7 @@
                  |
                  | 2. Prepare vCPU state
                  |    - load registers
-                 |    - load CR0, CR3, CR4
+                 |    - load CR0, CR3, CR4  (NOTE:CR3 because we have shadow page table)
                  |    - load segment desc.
                  |    - load MSRs (EFER, APIC base)
                  |
@@ -76,6 +76,11 @@
 └────────────────────────────────────────────────────────────────────────┘
                  |
                  | 4. CPU → KVM exit handler in kernel
+                 |
+                 | Exit resasons are architecture dependent SVM_EXIT_* or VMX_EXIT_*
+                 | first architecture code (kvm_svm.c or kvm_vmx.c) tries to handle these
+                 | if not it passes to the kvm.c.
+                 |
                  |
                  | KVM populates: struct kvm_run.exit_reason =
                  |    - MMIO?
