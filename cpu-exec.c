@@ -206,6 +206,9 @@ static void cpu_handle_debug_exception(CPUState *env)
         debug_excp_handler(env);
 }
 
+/*
+ * XXX: CPU main loop
+ */
 /* main execution loop */
 
 int cpu_exec(CPUState *env1)
@@ -336,6 +339,10 @@ int cpu_exec(CPUState *env1)
             }
 #endif
 
+            /*
+             * XXX:
+             *  call kvm_cpu_exec()
+             */
             if (kvm_enabled()) {
                 kvm_cpu_exec(env);
                 longjmp(env->jmp_env, 1);

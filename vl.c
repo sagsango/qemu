@@ -4579,6 +4579,9 @@ static void termsig_setup(void)
 
 #endif
 
+/*
+ * XXX: Starts from here (guest machine)
+ */
 int main(int argc, char **argv, char **envp)
 {
 #ifdef CONFIG_GDBSTUB

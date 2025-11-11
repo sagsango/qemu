@@ -54,6 +54,12 @@
 #define SVM_EXITINTINFO_VALID SVM_EVTINJ_VALID
 #define SVM_EXITINTINFO_VALID_ERR SVM_EVTINJ_VALID_ERR
 
+/*
+ * XXX: arch spesific - AMD i386
+ *      We never see these exit code directly when we are using kvm
+ *      we will only see KVM_EXIT_* which are already present in the
+ *      kvm_cpu_exec() loop
+ */
 #define	SVM_EXIT_READ_CR0 	0x000
 #define	SVM_EXIT_READ_CR3 	0x003
 #define	SVM_EXIT_READ_CR4 	0x004

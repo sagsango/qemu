@@ -1,4 +1,9 @@
 /*
+ * XXX:
+ *  Only Guest program is run on the host;
+ *  No emulated CPU or VMs
+ */
+/*
  *  qemu user main
  *
  *  Copyright (c) 2003-2008 Fabrice Bellard
@@ -2234,6 +2239,7 @@ void init_task_state(TaskState *ts)
 /*
  * XXX:
  *	We start from here!
+ *	but no guest vm, cpu emulation obly running a guest program
  */
 int main(int argc, char **argv, char **envp)
 {

@@ -449,6 +449,11 @@ static void kvm_run_coalesced_mmio(CPUState *env, struct kvm_run *run)
 #endif
 }
 
+/*
+ * XXX:
+ *  called by cpu_exec()
+ *  KVM mail loop
+ */
 int kvm_cpu_exec(CPUState *env)
 {
     struct kvm_run *run = env->kvm_run;
@@ -464,6 +469,7 @@ int kvm_cpu_exec(CPUState *env)
         }
 
         kvm_arch_pre_run(env, run);
+        /* XXX: KVM_RUN */
         ret = kvm_vcpu_ioctl(env, KVM_RUN, 0);
         kvm_arch_post_run(env, run);
 
@@ -480,8 +486,12 @@ int kvm_cpu_exec(CPUState *env)
 
         kvm_run_coalesced_mmio(env, run);
 
+        /* XXX: Exit loop */
         ret = 0; /* exit loop */
         switch (run->exit_reason) {
+        /* XXX: KVM translate the SVM_EXIT_ (arch dependent exit reasons to the KVM_EXIT_
+         *      arch independent.
+         */
         case KVM_EXIT_IO:
             dprintf("handle_io\n");
             ret = kvm_handle_io(env, run->io.port,
@@ -520,6 +530,13 @@ int kvm_cpu_exec(CPUState *env)
             break;
         default:
             dprintf("kvm_arch_handle_exit\n");
+            /* XXX: other are handleded by arch itself
+             *      we will focus on AMD i386 arch
+             *      see target-i386/svm.h for all EXIT reasons
+             *
+             *      first break from here and then return to cpu_exec()
+             *      here we will handle arch exit reasons
+             */
             ret = kvm_arch_handle_exit(env, run);
             break;
         }
