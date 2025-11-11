@@ -17,8 +17,6 @@
                     Continue guest execution
                             │
                             └───► loops back forever
-
-
                             │ Yes
                             ▼
          ┌────────────────────────────────────────────────┐
@@ -36,20 +34,23 @@
                 │   Does KVM handle this internally?  │
                 │   (CRx, DRx, RDTSC, LGDT, LIDT…)   │
                 └───────────────┬─────────────────────┘
-                                │ Yes
-                                ▼
-            ┌────────────────────────────────────────────┐
-            │  KVM emulates instruction internally       │
-            │  updates registers, RIP, RFLAGS etc.       │
-            └─────────────────┬──────────────────────────┘
-                              │
-                              ▼
-                     Resume GUEST execution
-                       (hardware VMRUN)
-                              │
-                              └─────► loops back
-
-
+                                │
+                                │_________________________________
+                                │                                 │
+                                │ Yes                             │
+                                ▼                                 │
+            ┌────────────────────────────────────────────┐        │
+            │  KVM emulates instruction internally       │        │
+            │  updates registers, RIP, RFLAGS etc.       │        │
+            └─────────────────┬──────────────────────────┘        │
+                              │                                   │
+                              ▼                                   │
+                     Resume GUEST execution                       │
+                       (hardware VMRUN)                           │
+                              │                                   │
+                              └─────► loops back                  │
+                                                                  │
+                                ──────────────────────────────────
                                 │ No
                                 ▼
        ┌─────────────────────────────────────────────────────────┐
@@ -65,7 +66,7 @@
                                ▼
                 Userspace exit: ioctl(KVM_RUN) returns
                             to QEMU
-
+                               │
                                ▼
                    ┌───────────────────────┐
                    │     QEMU (userspace)  │
