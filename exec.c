@@ -2899,6 +2899,12 @@ CPUReadMemoryFunc **cpu_get_io_memory_read(int io_index)
 
 #endif /* !defined(CONFIG_USER_ONLY) */
 
+/* XXX: KVM_EXIT_MMIO
+ *      In this case we have 2 choices one for debugging one 
+ *      in production environment.
+ *
+ *      See what option we have in current version of qemu
+ */
 /* physical memory access (slow version, mainly for debug) */
 #if defined(CONFIG_USER_ONLY)
 void cpu_physical_memory_rw(target_phys_addr_t addr, uint8_t *buf,

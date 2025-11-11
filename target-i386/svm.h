@@ -59,6 +59,10 @@
  *      We never see these exit code directly when we are using kvm
  *      we will only see KVM_EXIT_* which are already present in the
  *      kvm_cpu_exec() loop
+ *
+ *      See kvm source:
+ *          linux-2.6.20/drivers/kvm/svm.c
+ *          linux-2.6.20/drivers/kvm/svm.h
  */
 #define	SVM_EXIT_READ_CR0 	0x000
 #define	SVM_EXIT_READ_CR3 	0x003
