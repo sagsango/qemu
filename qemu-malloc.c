@@ -1,3 +1,4 @@
+/* XXX: qemu_malloc : a wrapper over malloc */
 /*
  * malloc-like functions for system emulation.
  *
