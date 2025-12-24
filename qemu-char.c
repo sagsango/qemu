@@ -160,6 +160,7 @@ int qemu_chr_can_read(CharDriverState *s)
 
 void qemu_chr_read(CharDriverState *s, uint8_t *buf, int len)
 {
+    /* XXX: calls serial.c::serial_receive1() */
     s->chr_read(s->handler_opaque, buf, len);
 }
 

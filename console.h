@@ -96,6 +96,9 @@ struct DisplaySurface {
     struct PixelFormat pf;
 };
 
+/* XXX: mini “display driver vtable” 
+ *  dpy_update:
+ */ 
 struct DisplayChangeListener {
     int idle;
     uint64_t gui_timer_interval;
@@ -113,6 +116,7 @@ struct DisplayChangeListener {
     struct DisplayChangeListener *next;
 };
 
+/* XXX: Display state */
 struct DisplayState {
     struct DisplaySurface *surface;
     void *opaque;

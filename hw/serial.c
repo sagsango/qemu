@@ -1,3 +1,4 @@
+/* XXX: serial device sends data bit by bit */
 /*
  * QEMU 16550A UART emulation
  *
@@ -183,7 +184,7 @@ static uint8_t fifo_get(SerialState *s, int fifo)
 
     return c;
 }
-
+/* XXX: injting interrupt called by serial.c::serial_receive_break() */
 static void serial_update_irq(SerialState *s)
 {
     uint8_t tmp_iir = UART_IIR_NO_INT;
@@ -210,6 +211,7 @@ static void serial_update_irq(SerialState *s)
     s->iir = tmp_iir | (s->iir & 0xF0);
 
     if (tmp_iir != UART_IIR_NO_INT) {
+        /* XXX: Finally raise the interrup */
         qemu_irq_raise(s->irq);
     } else {
         qemu_irq_lower(s->irq);
@@ -583,12 +585,14 @@ static int serial_can_receive(SerialState *s)
     }
 }
 
+/* XXX: called by qemu_char.c::qemu_chr_read() */
 static void serial_receive_break(SerialState *s)
 {
     s->rbr = 0;
     /* When the LSR_DR is set a null byte is pushed into the fifo */
     fifo_put(s, RECV_FIFO, '\0');
     s->lsr |= UART_LSR_BI | UART_LSR_DR;
+    /* XXX: inject an interrupt */
     serial_update_irq(s);
 }
 

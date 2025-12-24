@@ -407,6 +407,7 @@ static void toggle_full_screen(DisplayState *ds)
     vga_hw_update();
 }
 
+/* XXX: Main loop for the SDL_PollEvent(); SDL = Simple DirectMedia Layer */
 static void sdl_refresh(DisplayState *ds)
 {
     SDL_Event ev1, *ev = &ev1;
@@ -426,6 +427,8 @@ static void sdl_refresh(DisplayState *ds)
         case SDL_VIDEOEXPOSE:
             sdl_update(ds, 0, 0, real_screen->w, real_screen->h);
             break;
+
+        /* XXX: KEYUP & KEYDOWN (keydown = pressed; keyup = released)*/
         case SDL_KEYDOWN:
         case SDL_KEYUP:
             if (ev->type == SDL_KEYDOWN) {
@@ -695,10 +698,10 @@ void sdl_display_init(DisplayState *ds, int full_screen, int no_frame)
     }
 
     dcl = qemu_mallocz(sizeof(DisplayChangeListener));
-    dcl->dpy_update = sdl_update;
-    dcl->dpy_resize = sdl_resize;
-    dcl->dpy_refresh = sdl_refresh;
-    dcl->dpy_setdata = sdl_setdata;
+    dcl->dpy_update = sdl_update;               /* XXX: “rectangle changed” */
+    dcl->dpy_resize = sdl_resize;               /* XXX: “guest resolution changed” */
+    dcl->dpy_refresh = sdl_refresh;             /* XXX: “poll events + periodic UI” */
+    dcl->dpy_setdata = sdl_setdata;             /* XXX: “surface data pointer changed” */
     dcl->dpy_fill = sdl_fill;
     ds->mouse_set = sdl_mouse_warp;
     ds->cursor_define = sdl_mouse_define;

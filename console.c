@@ -113,6 +113,7 @@ typedef enum {
     TEXT_CONSOLE_FIXED_SIZE
 } console_type_t;
 
+/* XXX: guest console configuration */
 /* ??? This is mis-named.
    It is used for both text and graphical consoles.  */
 struct TextConsole {
@@ -148,6 +149,9 @@ struct TextConsole {
     int esc_params[MAX_ESC_PARAMS];
     int nb_esc_params;
 
+    /* XXX: We put the keypress in the 
+     *      char device backend
+     */
     CharDriverState *chr;
     /* fifo for key pressed */
     QEMUFIFO out_fifo;
@@ -1129,6 +1133,7 @@ static void kbd_send_chars(void *opaque)
         if (len > sizeof(buf))
             len = sizeof(buf);
         qemu_fifo_read(&s->out_fifo, buf, len);
+        /* XXX: insert the key into the char-device backend */
         qemu_chr_read(s->chr, buf, len);
     }
     /* characters are pending: we send them a bit later (XXX:
@@ -1138,6 +1143,7 @@ static void kbd_send_chars(void *opaque)
     }
 }
 
+/* XXX: ASCII key pressed */
 /* called when an ascii key is pressed */
 void kbd_put_keysym(int keysym)
 {
@@ -1320,6 +1326,7 @@ static int n_text_consoles;
 static CharDriverState *text_consoles[128];
 static char *text_console_strs[128];
 
+/* XXX: Text console init */
 static void text_console_do_init(CharDriverState *chr, DisplayState *ds, const char *p)
 {
     TextConsole *s;

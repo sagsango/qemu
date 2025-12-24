@@ -42,6 +42,12 @@ typedef struct {
 
 typedef void IOEventHandler(void *opaque, int event);
 
+/* XXX: Qemu opens a char device-backend for the guest 
+ *      example - keyboard
+ *
+ *      host-keyboard -> host-kernel-keyboard-driver -> (x server -> window-manager -> x-server) 
+ *          -> qemu -> keybaord-device-backed -> 
+ */
 struct CharDriverState {
     void (*init)(struct CharDriverState *s);
     int (*chr_write)(struct CharDriverState *s, const uint8_t *buf, int len);
@@ -50,7 +56,7 @@ struct CharDriverState {
     IOEventHandler *chr_event;
     IOCanRWHandler *chr_can_read;
     IOReadHandler *chr_read;
-    void *handler_opaque;
+    void *handler_opaque; /* XXX: Here we are putting irq handler = SerialState */
     void (*chr_send_event)(struct CharDriverState *chr, int event);
     void (*chr_close)(struct CharDriverState *chr);
     void (*chr_accept_input)(struct CharDriverState *chr);
