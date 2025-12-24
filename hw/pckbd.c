@@ -154,6 +154,9 @@ static void kbd_update_irq(KBDState *s)
                 irq_kbd_level = 1;
         }
     }
+    /* XXX: Set the interrup in i8259 interrupt controller
+     *      see pc_init1::i8259
+     */
     qemu_set_irq(s->irq_kbd, irq_kbd_level);
     qemu_set_irq(s->irq_mouse, irq_mouse_level);
 }

@@ -443,6 +443,27 @@ static void kvm_run_coalesced_mmio(CPUState *env, struct kvm_run *run)
 #endif
 }
 
+/* XXX: 5. [Interrupts qemu -> KVM -> vCPU]
+
+Qemu Loop:
+main()
+ └── main_loop()
+      └── main_loop_dispatch()
+           └── cpu_exec_all()
+                └── cpu_exec()
+                     └── kvm_cpu_exec()
+                          ├── kvm_arch_pre_run()
+                          ├── ioctl(KVM_RUN)
+                          │     (guest executes)
+                          ├── KVM_EXIT_*
+                          │     ├── IO
+                          │     ├── MMIO
+                          │     ├── HLT
+                          │     ├── IRQ_WINDOW
+                          │     └── SHUTDOWN
+                          ├── kvm_arch_post_run()
+                          └── loop → KVM_RUN
+*/
 int kvm_cpu_exec(CPUState *env)
 {
     struct kvm_run *run = env->kvm_run;
@@ -458,6 +479,10 @@ int kvm_cpu_exec(CPUState *env)
         }
 
         kvm_arch_pre_run(env, run);
+        /* XXX: 4. [Interrupts qemu -> KVM -> vCPU]
+         *      On KVM_RUN all the interrupts will be delevered
+         *      to KVM then KVM will inject those to vcpus
+         */
         ret = kvm_vcpu_ioctl(env, KVM_RUN, 0);
         kvm_arch_post_run(env, run);
 

@@ -30,6 +30,10 @@ struct IRQState {
     int n;
 };
 
+/* XXX: 1. [Interrupts qemu -> KVM -> vCPU]
+ *      Set the interrup in i8259 interrupt controller
+ *      see pc_init1::i8259
+ */
 void qemu_set_irq(qemu_irq irq, int level)
 {
     if (!irq)

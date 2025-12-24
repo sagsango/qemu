@@ -541,6 +541,8 @@ typedef union {
 
 #define NB_MMU_MODES 2
 
+/* XXX:  2. [Interrupts qemu -> KVM -> vCPU]:
+ *       Here is the cpu state in qemu level*/
 typedef struct CPUX86State {
     /* standard registers */
     target_ulong regs[CPU_NB_REGS];
@@ -664,6 +666,9 @@ typedef struct CPUX86State {
     int last_io_time;
 #endif
 
+    /* XXX: here are pending interrupts 
+     *      3. [Interrupts qemu -> KVM -> vCPU]
+     */
     /* For KVM */
     uint64_t interrupt_bitmap[256 / 64];
 
