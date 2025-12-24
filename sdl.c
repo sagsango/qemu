@@ -227,6 +227,7 @@ static void reset_keys(void)
     }
 }
 
+/* XXX: [host-to-geust:02] process the key given by X11 */
 static void sdl_process_key(SDL_KeyboardEvent *ev)
 {
     int keycode, v;
@@ -275,6 +276,8 @@ static void sdl_process_key(SDL_KeyboardEvent *ev)
     /* now send the key code */
     if (keycode & 0x80)
         kbd_put_keycode(0xe0);
+
+    /* [host-to-geust:03] Inject the key into QEMUMachine */
     if (ev->type == SDL_KEYUP)
         kbd_put_keycode(keycode | 0x80);
     else
@@ -423,6 +426,7 @@ static void sdl_refresh(DisplayState *ds)
     vga_hw_update();
     SDL_EnableUNICODE(!is_graphic_console());
 
+    /* XXX: [host-to-geust:01] X11 events is detected */
     while (SDL_PollEvent(ev)) {
         switch (ev->type) {
         case SDL_VIDEOEXPOSE:
@@ -533,6 +537,7 @@ static void sdl_refresh(DisplayState *ds)
                 }
             }
             if (is_graphic_console() && !gui_keysym)
+                /* XXX: [host-to-geust:02] Procee the key */
                 sdl_process_key(&ev->key);
             break;
         case SDL_QUIT:

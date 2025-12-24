@@ -617,6 +617,9 @@ void qemu_remove_mouse_event_handler(QEMUPutMouseEntry *entry)
 /* XXX: This is the function which will be aviable to all
  *      to inject the keys in the hardware of the keyboard
  *      QEMUMachine
+ *
+ *
+ *      [host-to-geust:03] Inject the key into QEMUMachine
  */
 void kbd_put_keycode(int keycode)
 {

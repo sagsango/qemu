@@ -17,7 +17,9 @@ pc_init1()
 
 
 
+
 # How and who will use this keyboard to give inputs
+-----------------------
 [ Host Keyboard ]
         |
         v
@@ -40,9 +42,10 @@ pc_init1()
         v
 [ Guest CPU IRQ1 ]
 
+-----------------------
 
 
-
+--------------------------------------------------
 Host key press
   ↓
 SDL_PollEvent()                    (sdl.c)
@@ -60,4 +63,4 @@ qemu_set_irq(IRQ1, 1)              (i8259)
 Guest CPU interrupt
   ↓
 Guest reads port 0x60
-
+--------------------------------------------------
