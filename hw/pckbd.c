@@ -114,6 +114,7 @@
 #define KBD_PENDING_KBD         1
 #define KBD_PENDING_AUX         2
 
+/* XXX: KBDState: the chip on the motherboard */
 typedef struct KBDState {
     uint8_t write_cmd; /* if non zero, write data to port 60 is expected */
     uint8_t status;
@@ -157,6 +158,7 @@ static void kbd_update_irq(KBDState *s)
     qemu_set_irq(s->irq_mouse, irq_mouse_level);
 }
 
+/* XXX: keyboard irq injection */
 static void kbd_update_kbd_irq(void *opaque, int level)
 {
     KBDState *s = (KBDState *)opaque;
@@ -364,6 +366,9 @@ static int kbd_load(QEMUFile* f, void* opaque, int version_id)
     return 0;
 }
 
+/* XXX: 3. Init the keyboard-controller (hanrdware)
+ *         https://wiki.osdev.org/I8042_PS/2_Controller
+ */
 void i8042_init(qemu_irq kbd_irq, qemu_irq mouse_irq, uint32_t io_base)
 {
     KBDState *s = &kbd_state;
@@ -378,6 +383,7 @@ void i8042_init(qemu_irq kbd_irq, qemu_irq mouse_irq, uint32_t io_base)
     register_ioport_read(io_base + 4, 1, 1, kbd_read_status, s);
     register_ioport_write(io_base + 4, 1, 1, kbd_write_command, s);
 
+    /* XXX: 4.init the keyboard */
     s->kbd = ps2_kbd_init(kbd_update_kbd_irq, s);
     s->mouse = ps2_mouse_init(kbd_update_aux_irq, s);
 #ifdef TARGET_I386

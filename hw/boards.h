@@ -3,6 +3,7 @@
 #ifndef HW_BOARDS_H
 #define HW_BOARDS_H
 
+/* XXX: Qemu machine initialization function */
 typedef void QEMUMachineInitFunc(ram_addr_t ram_size, int vga_ram_size,
                                  const char *boot_device,
                                  const char *kernel_filename,
@@ -10,6 +11,11 @@ typedef void QEMUMachineInitFunc(ram_addr_t ram_size, int vga_ram_size,
                                  const char *initrd_filename,
                                  const char *cpu_model);
 
+/* XXX: a Qemu machine 
+ *      this is the hardware board discription
+ *      these forms a linked list
+ *      hw/boards.h
+ */
 typedef struct QEMUMachine {
     const char *name;
     const char *desc;
@@ -25,12 +31,16 @@ typedef struct QEMUMachine {
 int qemu_register_machine(QEMUMachine *m);
 void register_machines(void);
 
+/* XXX: Current machine and 100s types of machines
+ *      based on architecture
+ */
 extern QEMUMachine *current_machine;
 
 /* Axis ETRAX.  */
 extern QEMUMachine bareetraxfs_machine;
 extern QEMUMachine axisdev88_machine;
 
+/* XXX: We will use pc machine as an example */
 /* pc.c */
 extern QEMUMachine pc_machine;
 extern QEMUMachine isapc_machine;

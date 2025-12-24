@@ -407,7 +407,8 @@ static void toggle_full_screen(DisplayState *ds)
     vga_hw_update();
 }
 
-/* XXX: Main loop for the SDL_PollEvent(); SDL = Simple DirectMedia Layer */
+/* XXX: Main loop for the SDL_PollEvent(); SDL = Simple DirectMedia Layer 
+ *      Here comes the X11 events*/
 static void sdl_refresh(DisplayState *ds)
 {
     SDL_Event ev1, *ev = &ev1;

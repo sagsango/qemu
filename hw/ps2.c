@@ -84,6 +84,7 @@ typedef struct {
     void *update_arg;
 } PS2State;
 
+/* XXX: PS2KbdState: the thing you type on, physical keyboard itself*/
 typedef struct {
     PS2State common;
     int scan_enabled;
@@ -120,6 +121,7 @@ static const unsigned char ps2_raw_keycode[128] = {
          19, 25, 57, 81, 83, 92, 95, 98, 99,100,101,103,104,106,109,110
 };
 
+/* XXX: queue the key */
 void ps2_queue(void *opaque, int b)
 {
     PS2State *s = (PS2State *)opaque;
@@ -131,9 +133,13 @@ void ps2_queue(void *opaque, int b)
     if (++q->wptr == PS2_QUEUE_SIZE)
         q->wptr = 0;
     q->count++;
+    /* XXX: inject the interrupt 
+     *      hw/pckbd.c::kbd_update_irq()
+     */
     s->update_irq(s->update_arg, 1);
 }
 
+/* XXX: encode the key */
 /*
    keycode is expressed as follow:
    bit 7    - 0 key pressed, 1 = key released
@@ -609,6 +615,7 @@ static int ps2_mouse_load(QEMUFile* f, void* opaque, int version_id)
     return 0;
 }
 
+/* XXX: 4. init the keyboardps2_put_keycode */
 void *ps2_kbd_init(void (*update_irq)(void *, int), void *update_arg)
 {
     PS2KbdState *s = (PS2KbdState *)qemu_mallocz(sizeof(PS2KbdState));
@@ -618,7 +625,12 @@ void *ps2_kbd_init(void (*update_irq)(void *, int), void *update_arg)
     s->scancode_set = 2;
     ps2_kbd_reset(s);
     register_savevm("ps2kbd", 0, 3, ps2_kbd_save, ps2_kbd_load, s);
+    /* XXX: Add event handler, how to queue the key and inject interrupt 
+     *      a. ps2_put_keycode
+     *      b. qemu_add_kbd_event_handler
+     */
     qemu_add_kbd_event_handler(ps2_put_keycode, s);
+    /* XXX: what to call when qemu-reset happens */
     qemu_register_reset(ps2_kbd_reset, s);
     return s;
 }

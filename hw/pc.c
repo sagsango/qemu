@@ -784,6 +784,7 @@ static void pc_init_ne2k_isa(NICInfo *nd, qemu_irq *pic)
     nb_ne2k++;
 }
 
+/* XXX: 3. Init the hardware board of QEMUMachine type pc */ 
 /* PC hardware initialisation */
 static void pc_init1(ram_addr_t ram_size, int vga_ram_size,
                      const char *boot_device,
@@ -800,6 +801,9 @@ static void pc_init1(ram_addr_t ram_size, int vga_ram_size,
     int piix3_devfn = -1;
     CPUState *env;
     qemu_irq *cpu_irq;
+    /* XXX: Programmable Interrupt Controller (PIC);
+     *      https://wiki.osdev.org/8259_PIC 
+     */
     qemu_irq *i8259;
     int index;
     BlockDriverState *hd[MAX_IDE_BUS * MAX_IDE_DEVS];
@@ -1068,7 +1072,14 @@ vga_bios_error:
         }
     }
 
+    /* XXX: 4. keyboard init 
+     *      interrupt #1 goes for the keyboard
+     *      interrupt #2 goes for the mouse
+     *
+     *      io base memory for the io
+     */
     i8042_init(i8259[1], i8259[12], 0x60);
+    /* XXX: TODO: DMA */
     DMA_init(0);
 #ifdef HAS_AUDIO
     audio_init(pci_enabled ? pci_bus : NULL, i8259);
@@ -1146,6 +1157,9 @@ vga_bios_error:
     }
 }
 
+/* XXX: 2. our QEMUMachine type is pc;
+ *         and this is how we init it
+ */
 static void pc_init_pci(ram_addr_t ram_size, int vga_ram_size,
                         const char *boot_device,
                         const char *kernel_filename,
@@ -1178,6 +1192,7 @@ void cmos_set_s3_resume(void)
         rtc_set_memory(rtc_state, 0xF, 0xFE);
 }
 
+/* XXX: our machine is pc */
 QEMUMachine pc_machine = {
     .name = "pc",
     .desc = "Standard PC",

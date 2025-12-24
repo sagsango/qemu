@@ -536,8 +536,13 @@ ram_addr_t qemu_balloon_status(void)
 /***********************************************************/
 /* keyboard/mouse */
 
-static QEMUPutKBDEvent *qemu_put_kbd_event;
-static void *qemu_put_kbd_event_opaque;
+static QEMUPutKBDEvent *qemu_put_kbd_event; /* XXX: called when to queue
+                                               the input from keyboard*/
+static void *qemu_put_kbd_event_opaque; /* XXX: PS2KbdState, which has
+                                           KBDState
+                                         */
+
+
 static QEMUPutMouseEntry *qemu_put_mouse_event_head;
 static QEMUPutMouseEntry *qemu_put_mouse_event_current;
 
@@ -609,6 +614,10 @@ void qemu_remove_mouse_event_handler(QEMUPutMouseEntry *entry)
     qemu_free(entry);
 }
 
+/* XXX: This is the function which will be aviable to all
+ *      to inject the keys in the hardware of the keyboard
+ *      QEMUMachine
+ */
 void kbd_put_keycode(int keycode)
 {
     if (qemu_put_kbd_event) {
@@ -4579,6 +4588,7 @@ static void termsig_setup(void)
 
 #endif
 
+/* XXX: 1. Qemu starts */
 int main(int argc, char **argv, char **envp)
 {
 #ifdef CONFIG_GDBSTUB
@@ -5596,6 +5606,12 @@ int main(int argc, char **argv, char **envp)
         }
     }
 
+    /* XXX: 2. Calling machine init
+     *         our QEMUMachine type is pc
+     *         so machine->init = pc_init_pci
+     *
+     *         we are initing the hardware board now
+     */
     machine->init(ram_size, vga_ram_size, boot_devices,
                   kernel_filename, kernel_cmdline, initrd_filename, cpu_model);
 
