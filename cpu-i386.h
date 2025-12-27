@@ -169,24 +169,27 @@ typedef struct SegmentCache {
 
 
 /* XXX: CPU Mode and memory protection:
-+----------------------+----------------------+----------------------+-------+----------------------+
-| CPU MODE             | SEGMENTATION         | PAGING               | RINGS | MEMORY PROTECTION    |
-+----------------------+----------------------+----------------------+-------+----------------------+
-| Real Mode            | None                 | None                 | None  | None                 |
-|                      | (seg<<4 + offset)    |                      |       |                      |
-+----------------------+----------------------+----------------------+-------+----------------------+
-| Unreal Mode          | Partial (cached)     | None                 | None  | None                 |
-| (not standard)       | (4GB limits only)    |                      |       |                      |
-+----------------------+----------------------+----------------------+-------+----------------------+
-| Protected Mode (32)  | Full (GDT/LDT)       | Optional (CR0.PG)    | Yes   | Yes                  |
-|                      | Base, limit, DPL     | 4KB / 4MB pages      | 0–3   | Seg + Paging         |
-+----------------------+----------------------+----------------------+-------+----------------------+
-| Long Mode (64-bit)   | Minimal              | Mandatory            | Yes   | Yes                  |
-|                      | (CS/SS, FS/GS base)  | 4-level paging       | 0–3   | Paging only          |
-+----------------------+----------------------+----------------------+-------+----------------------+
-| Compat Mode (32-bit) | Partial              | Mandatory            | Yes   | Yes                  |
-| (inside Long Mode)  | (32-bit semantics)    | x86-64 paging        | 0–3   | Paging only          |
-+----------------------+----------------------+----------------------+-------+----------------------+
++---------------------------+---------------------------+---------------------------+-------+---------------------------+
+| CPU MODE                  | SEGMENTATION              | PAGING                    | RINGS | MEMORY PROTECTION         |
++---------------------------+---------------------------+---------------------------+-------+---------------------------+
+| Real Mode                 | None                      | None                      | None  | None                      |
+|                           | (seg<<4 + offset)         |                           |       |                           |
++---------------------------+---------------------------+---------------------------+-------+---------------------------+
+| Unreal Mode               | Partial (cached)          | None                      | None  | None                      |
+| (non standard)            | (4GB limits only)         |                           |       |                           |
++---------------------------+---------------------------+---------------------------+-------+---------------------------+
+| Protected Mode (32-bit)   | Full (GDT/LDT)            | Optional (CR0.PG)         | Yes   | Yes                       |
+|                           | Base, limit, DPL          | 4KB / 4MB pages           | 0–3   | Seg + Paging              |
++---------------------------+---------------------------+---------------------------+-------+---------------------------+
+| Long Mode (64-bit)        | Minimal                   | Mandatory                 | Yes   | Yes                       |
+|                           | (CS/SS, FS/GS base)       | 4-level paging            | 0–3   | Paging only               |
++---------------------------+---------------------------+---------------------------+-------+---------------------------+
+| Compat Mode (32-bit)      | Partial                   | Mandatory                 | Yes   | Yes                       |
+| (inside Long Mode)        | (32-bit semantics)        | x86-64 paging             | 0–3   | Paging only               |
++---------------------------+---------------------------+---------------------------+-------+---------------------------+
+| Guest Mode (VMX/SVM)      | Same as guest CPU mode    | Two-stage paging          | Yes   | Yes (hardware-enforced)   |
+| (Virtualized CPU)         | (real/prot/long)          | GVA→GPA→HPA               | 0–3   | Guest + Host isolation    |
++---------------------------+---------------------------+---------------------------+-------+---------------------------+
 */
 
 /*
